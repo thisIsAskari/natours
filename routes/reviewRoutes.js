@@ -17,7 +17,8 @@ router
     authController.restrictTo('user'),
     reviewController.createReview,
   );
-
+// POST /reviews
+// GET /reviews
 router
   .route('/')
   .post(
@@ -26,5 +27,7 @@ router
     reviewController.createReview,
   )
   .get(reviewController.getAllReviews);
+
+router.route('/:id').delete(reviewController.deleteReview);
 
 module.exports = router;
