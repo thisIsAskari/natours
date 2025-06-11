@@ -1,8 +1,8 @@
 const Tour = require('../models/tourModel');
-const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
+// const APIFeatures = require('../utils/apiFeatures');
+// const AppError = require('../utils/appError');
 
 exports.aliasTopToursMiddleware = (req, res, next) => {
   req.query.limit = '5';
@@ -11,75 +11,75 @@ exports.aliasTopToursMiddleware = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  //Building Query
-  // 1A) Filtering
-  // const queryObj = { ...req.query };
-  // const excludedFields = ['page', 'sort', 'limit', 'fields'];
-  // excludedFields.forEach((el) => delete queryObj[el]);
-  // // console.log(req.query, queryObj);
+// exports.getAllTours = catchAsync(async (req, res, next) => {
+//   //Building Query
+//   // 1A) Filtering
+//   // const queryObj = { ...req.query };
+//   // const excludedFields = ['page', 'sort', 'limit', 'fields'];
+//   // excludedFields.forEach((el) => delete queryObj[el]);
+//   // // console.log(req.query, queryObj);
 
-  // // 1B) Advance Filtering
-  // let queryStr = JSON.stringify(queryObj);
-  // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+//   // // 1B) Advance Filtering
+//   // let queryStr = JSON.stringify(queryObj);
+//   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-  // let query = Tour.find(JSON.parse(queryStr));
+//   // let query = Tour.find(JSON.parse(queryStr));
 
-  //2) Sorting
-  // if (req.query.sort) {
-  //   const sortBy = req.query.sort.split(',').join(' ');
-  //   query = query.sort(sortBy);
-  // } else {
-  //   query = query.sort('-createdAt');
-  // }
+//   //2) Sorting
+//   // if (req.query.sort) {
+//   //   const sortBy = req.query.sort.split(',').join(' ');
+//   //   query = query.sort(sortBy);
+//   // } else {
+//   //   query = query.sort('-createdAt');
+//   // }
 
-  //3) Fields limiting
-  // if (req.query.fields) {
-  //   const fields = req.query.fields.split(',').join(' ');
-  //   query = query.select(fields);
-  // } else {
-  //   query = query.select('-__v');
-  // }
+//   //3) Fields limiting
+//   // if (req.query.fields) {
+//   //   const fields = req.query.fields.split(',').join(' ');
+//   //   query = query.select(fields);
+//   // } else {
+//   //   query = query.select('-__v');
+//   // }
 
-  //4) Pagination
-  // const page = req.query.page * 1 || 1;
-  // const limit = req.query.limit * 1 || 100;
-  // const skip = (page - 1) * limit;
+//   //4) Pagination
+//   // const page = req.query.page * 1 || 1;
+//   // const limit = req.query.limit * 1 || 100;
+//   // const skip = (page - 1) * limit;
 
-  // query = query.skip(skip).limit(limit);
-  // if (req.query.page) {
-  //   const numTours = await Tour.countDocuments();
-  //   if (skip >= numTours) throw new Error('This page dose not exist');
-  // }
+//   // query = query.skip(skip).limit(limit);
+//   // if (req.query.page) {
+//   //   const numTours = await Tour.countDocuments();
+//   //   if (skip >= numTours) throw new Error('This page dose not exist');
+//   // }
 
-  // Execute Query
-  //query.sort().select().skip().limit()
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
+//   // Execute Query
+//   //query.sort().select().skip().limit()
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
+//   const tours = await features.query;
 
-  // const tours = await Tour.find({
-  //   duration: 5,
-  //   difficulty: 'easy',
-  // });
+//   // const tours = await Tour.find({
+//   //   duration: 5,
+//   //   difficulty: 'easy',
+//   // });
 
-  // const tours = await Tours.find()
-  //   .where('duration')
-  //   .equals(5)
-  //   .where('difficulty')
-  //   .equals('easy');
+//   // const tours = await Tours.find()
+//   //   .where('duration')
+//   //   .equals(5)
+//   //   .where('difficulty')
+//   //   .equals('easy');
 
-  res.status(200).json({
-    status: 'success',
-    result: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
+//   res.status(200).json({
+//     status: 'success',
+//     result: tours.length,
+//     data: {
+//       tours,
+//     },
+//   });
+// });
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -162,20 +162,20 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
+// exports.getTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findById(req.params.id).populate('reviews');
 
-  if (!tour) {
-    return next(new AppError('No tour found with this ID', 404));
-  }
+//   if (!tour) {
+//     return next(new AppError('No tour found with this ID', 404));
+//   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tour,
+//     },
+//   });
+// });
 
 // exports.updateTour = catchAsync(async (req, res, next) => {
 //   //   const id = req.params.id * 1;
@@ -198,8 +198,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
 //   });
 // });
 
-exports.updateTour = factory.updateOne(Tour);
-exports.deleteTour = factory.deleteOne(Tour);
 // exports.deleteTour = catchAsync(async (req, res, next) => {
 //   const tour = await Tour.findByIdAndDelete(req.params.id);
 //   console.log(req.params.id);
@@ -213,4 +211,9 @@ exports.deleteTour = factory.deleteOne(Tour);
 //   });
 // });
 
+exports.getAllTours = factory.getAll(Tour);
+// here Tour is our Model and { path: 'reviews' } is our populate options for getOne function in handlerFactory.js
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.updateTour = factory.updateOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
 exports.createTour = factory.createOne(Tour);

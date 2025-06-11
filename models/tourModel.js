@@ -127,9 +127,8 @@ tourSchema.virtual('durationWeeks').get(function () {
 // but we can use it to populate the data from other collection
 // this is a one to many relationship
 // one tour can have many reviews
-// one review can have one tour
 // controller function used this virtual property to populate the data from other collection
-// you can check this on getTour function in tourController.js
+// you can check this on getTour() function in tourController.js
 tourSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
