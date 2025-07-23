@@ -118,6 +118,12 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
+// 1 for ASC Order and -1 for DESC order
+// tourSchema.index({price: 1});
+tourSchema.index({ price: 1, ratingsAverage: -1 }); // compound index
+tourSchema.index({ slug: 1 }); // single field index
+// tourSchema.index({ startLocation: '2dsphere' });
+
 //this virtual property is not able to be a part or query because it is not exist in DB
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;

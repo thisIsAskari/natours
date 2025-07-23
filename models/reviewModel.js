@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Tour = require('./tourModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -55,6 +56,53 @@ reviewSchema.pre(/^find/, function (next) {
   });
   // next() is used to move to the next middleware
   next();
+});
+
+// store and update no of ratings and ratings Average when new review is created
+// by doing this we do not need to calculate it on showing stats
+// so we are update all review related with the tour id
+// when review is created, updated or deleted
+// we are using static method on our Schema, that's the feature of mongoos
+// we used instance method that can be called on documents
+// but these can be called on model directly
+reviewSchema.statics.calcAverageRatings = async function (tourId) {
+  // we are using aggrigation pipline to cauculate statics
+  // this keyword points to current model
+  // we are using aggregate method on our model
+  // aggregate method takes an array of pipline stages
+  // each stage is an object
+
+  const stats = await this.aggregate([
+    {
+      // first stage is to select all review related with the tour id
+      $match: { tour: tourId },
+    },
+    {
+      // second stage is to calculate average rating
+      // we are using $avg operator to calculate average
+      // $avg operator takes a field name as a value
+      // in our case we want to calculate average of rating field
+      $group: {
+        _id: '$tour',
+        nRating: { $sum: 1 },
+        avgRating: { $avg: '$rating' },
+      },
+    },
+  ]);
+  console.log(stats);
+
+  await Tour.findByIdAndUpdate(tourId, {
+    ratingsQuantity: stats[0].nRating,
+    ratingsAverage: stats[0].avgRating,
+  });
+};
+
+reviewSchema.post('save', function () {
+  // this points to current document
+  // this.constructor points to current model
+  // we are using calcAverageRatings method on current model
+  // we are passing tour id as a argument
+  this.constructor.calcAverageRatings(this.tour);
 });
 
 const Review = mongoose.model('Review', reviewSchema);
