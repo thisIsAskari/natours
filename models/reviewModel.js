@@ -91,10 +91,18 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
   ]);
   console.log(stats);
 
-  await Tour.findByIdAndUpdate(tourId, {
-    ratingsQuantity: stats[0].nRating,
-    ratingsAverage: stats[0].avgRating,
-  });
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: stats[0].nRating,
+      ratingsAverage: stats[0].avgRating,
+    });
+  } else {
+    // set as default
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: 0,
+      ratingsAverage: 4.5,
+    });
+  }
 };
 
 reviewSchema.post('save', function () {
@@ -103,6 +111,29 @@ reviewSchema.post('save', function () {
   // we are using calcAverageRatings method on current model
   // we are passing tour id as a argument
   this.constructor.calcAverageRatings(this.tour);
+});
+
+//findByIdAndUpdate
+//findByIdAndDelete
+// we need to update review ratingsQuantity and ratingsAverage when review is updated or deleted
+// we are using pre and post middleware to update review ratingsQuantity and ratingsAverage
+// because other then that there is no way to update the ratingsQuantity and ratingsAverage
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  // here in this function this keyword points to current query
+  // we are using "findOneAnd" keyword for findByIdAndUpdate/findByIdAndDelete method behind the scene on current query
+  // findOneAnd method returns a document as a result
+  // so we are using this.findOne() to get the document but we do nothing here becuase until this point data is not updated
+  // because we are using pre middleware to get the document
+  // so we just store the document in this.review(current query variable) to get access in post middleware
+  this.re = await this.clone().findOne(); // clone the query before executing
+  console.log(this.re);
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function () {
+  // here we know that this.review point to the document that is found by findOneAnd method in pre middleware
+  // so now we can update the data and save it
+  await this.re.constructor.calcAverageRatings(this.re.tour);
 });
 
 const Review = mongoose.model('Review', reviewSchema);
