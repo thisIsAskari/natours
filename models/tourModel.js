@@ -196,16 +196,16 @@ tourSchema.pre(/^find/, function (next) {
 // Pre-middleware hooks are functions that are executed before a certain operation (in this case, aggregate) is performed on the schema.
 // Aggregation Pipeline: MongoDB's aggregation framework allows you to process data records and return computed results.
 // The pipeline consists of stages, each performing a specific operation on the input documents.
-tourSchema.pre('aggregate', function (next) {
-  //this.pipeline() is a method that returns the aggregation pipeline for the current aggregate operation.
-  //unshift is standered JS function used to add something at the start of array
-  // The .unshift() method is used to add a new stage to the beginning of the pipeline array, ensuring that the $match stage is the first operation performed during aggregation.
-  // The element being added is a MongoDB aggregation stage: { $match: { secretTour: { $ne: true } } }.
-  // This stage filters out documents where the secretTour field is not equal to true.
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+// tourSchema.pre('aggregate', function (next) {
+//   //this.pipeline() is a method that returns the aggregation pipeline for the current aggregate operation.
+//   //unshift is standered JS function used to add something at the start of array
+//   // The .unshift() method is used to add a new stage to the beginning of the pipeline array, ensuring that the $match stage is the first operation performed during aggregation.
+//   // The element being added is a MongoDB aggregation stage: { $match: { secretTour: { $ne: true } } }.
+//   // This stage filters out documents where the secretTour field is not equal to true.
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
-  next();
-});
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 
