@@ -37,6 +37,9 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
+// 1 user can give 1 review on each tour
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 // QUERY MIDDLEWARE
 // regular expression for all functions which start from find
 reviewSchema.pre(/^find/, function (next) {
