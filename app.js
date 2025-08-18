@@ -90,7 +90,10 @@ app.use((req, res, next) => {
 //render will goes in views folder that we defined above and pick the file name we passed
 //in this case it is base.pug
 app.get('/', (req, res) => {
-  res.status(200).render('base');
+  res.status(200).render('base', {
+    tour: 'The Forest Hiker',
+    user: 'Askari',
+  });
 });
 
 app.use('/api/v1/tours', tourRouter);

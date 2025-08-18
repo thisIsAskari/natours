@@ -1,1 +1,24 @@
-h1 The Park Camper 
+doctype html
+html
+    title Natours | #{tour}
+    //- #{} this works as template string like this ${}
+    //- for comment we use "//-"
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='shortcut icon', href='/img/favicon.png', type='image/png')
+
+body
+    //- if we use = after any element it will consider that you are using javascript
+    h1= tour
+    h2= user.toUpperCase()
+
+    //- '-' this is start JS
+    - const x = 9;
+    //- don't use terminator ";" in JS in attributes
+    //- like this h2= x * 2; -> this will consider as syntax error
+    h2= x * 2
+
+    p This is just some text
+
+
+
+
