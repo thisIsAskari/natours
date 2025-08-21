@@ -2,11 +2,13 @@ extends base
 include _reviewCard
 
 block append head
+    //- script(src='https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js')
+    //- link(href='https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css' rel='stylesheet')
     //- script(src='/js/mapbox.js')
 
 
 //- this works as a function
-mixin overviewBox(label, text, icon)
+mixin overviewBox(label, text, icon) 
     .overview-box__detail
         svg.overview-box__icon
             use(xlink:href=`/img/icons.svg#${icon}`)
