@@ -20,7 +20,7 @@ exports.getTour = catchAsync(async (req, res) => {
     fields: 'review rating user', // required fields from reviews
   });
   res.status(200).render('tour', {
-    title: 'A Tour',
+    title: `${tour.name} Tour`,
     tour,
   });
 });
