@@ -30,11 +30,3 @@ exports.getLoginForm = (req, res) => {
     title: 'Log into your account',
   });
 };
-
-exports.login = (req, res) => {
-  console.log(req.body);
-  res.status(200).render('account', {
-    title: 'Your account',
-    csrfToken: req.csrfToken(),
-  });
-};
