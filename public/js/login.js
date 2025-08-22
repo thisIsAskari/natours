@@ -1,6 +1,4 @@
 /* eslint-disable */
-// import axios from 'https://cdn.jsdelivr.net/npm/axios@1.6.7/+esm';
-
 const login = async (email = '', password = '') => {
   try {
     const res = await axios({
@@ -20,9 +18,17 @@ const login = async (email = '', password = '') => {
     console.log(err);
   }
 };
-document.querySelector('.form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  login(email, password);
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('.form');
+  if (!form) {
+    console.error("Form with class '.form' not found");
+    return;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    login(email, password);
+  });
 });
