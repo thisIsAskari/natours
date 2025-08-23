@@ -26,7 +26,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set Security HTTP Headers
-app.use(helmet());
+// app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", 'ws://127.0.0.1:*'],
+    },
+  }),
+);
 
 // Developement Logging
 if (process.env.NODE_ENV === 'development') {
