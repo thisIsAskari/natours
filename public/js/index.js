@@ -2,14 +2,23 @@
 import '@babel/polyfill';
 import { login, logout } from './login';
 import { dislayMap } from './mapbox';
+import { updateSettings } from './updateSettings';
 
 // DOM ELEMENTS
 // const mapBox = document.getElementById('map');
 const mapBox = false;
 const loginForm = document.querySelector('.from--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
+const userDataForm = document.querySelector('.form-user-data');
+const userPasswordForm = document.querySelector('.form-user-password');
 
 // VALUES
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const passwordConfirmInput = document.getElementById('password-confirm');
+const passwordCurrentInput = document.getElementById('password-current');
+const submitBtn = document.querySelector('.btn--save-password');
 
 // DELEGATION
 if (mapBox) {
@@ -38,8 +47,37 @@ if (loginForm) {
   });
 }
 
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', async () => {
-    await logout();
+if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+if (userDataForm) {
+  userDataForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = nameInput.value;
+    const email = emailInput.value;
+    updateSettings({ name, email }, 'data');
+  });
+}
+
+if (userPasswordForm) {
+  userPasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const passwordCurrent = passwordCurrentInput.value;
+    const password = passwordInput.value;
+    const passwordConfirm = passwordConfirmInput.value;
+    submitBtn.textContent = 'Updating...';
+
+    submitBtn.disabled = true;
+
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'password',
+    );
+    passwordCurrentInput.value = '';
+    passwordInput.value = '';
+    passwordConfirmInput.value = '';
+    submitBtn.textContent = 'Save password';
+    submitBtn.disabled = false;
+    submitBtn.style.backgroundColor = '#55c57a';
   });
 }
