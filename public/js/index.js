@@ -6,7 +6,7 @@ import { dislayMap } from './mapbox';
 // DOM ELEMENTS
 // const mapBox = document.getElementById('map');
 const mapBox = false;
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.from--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 
 // VALUES
