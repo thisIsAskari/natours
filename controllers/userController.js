@@ -72,6 +72,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   //we do not want to update the whole body, in this case user will update their role or password
   //we specifiy the fields which will only be modifiable by the req.body
   const filteredBody = filterObj(req.body, 'name', 'email');
+  if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document
   // here we use findByIdAndUpdate because we want to skip the password validation process
