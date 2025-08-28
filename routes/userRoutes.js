@@ -21,6 +21,7 @@ router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updateMe',
   userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
   userController.updateMe,
 );
 router.delete('/deleteMe', userController.deleteMe);
@@ -30,7 +31,11 @@ router.use(authController.restrictTo('admin'));
 //users
 router
   .route('/')
-  .post(userController.uploadUserPhoto, userController.createUser)
+  .post(
+    userController.uploadUserPhoto,
+    userController.resizeUserPhoto,
+    userController.createUser,
+  )
   .get(userController.getAllUsers);
 router
   .route('/:id')
