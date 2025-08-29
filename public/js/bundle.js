@@ -12987,7 +12987,6 @@ if (userDataForm) {
     if (nameInput) form.append('name', nameInput.value);
     if (emailInput) form.append('email', emailInput.value);
     if (photoInput) form.append('photo', photoInput.files[0]);
-    console.log(form);
     (0, _updateSettings.updateSettings)(form, 'data');
   });
 }
