@@ -44,6 +44,7 @@ exports.getAccount = (req, res) => {
   });
 };
 
+// Updating User Data using form
 exports.updateUserData = catchAsync(async (req, res, next) => {
   const updateUserData = await User.findByIdAndUpdate(
     req.user.id,
