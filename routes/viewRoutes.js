@@ -19,6 +19,7 @@ router.get(
   authController.isLoggedIn,
   viewsController.getOverview,
 );
+router.get('/my-tours', authController.protect, viewsController.getMyTours);
 router.get('/me', authController.protect, viewsController.getAccount);
 
 router.use(authController.isLoggedIn);
